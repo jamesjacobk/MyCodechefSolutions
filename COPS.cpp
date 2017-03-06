@@ -1,49 +1,73 @@
 #include <iostream>
 #include <cstdio>
-
+ 
 using namespace std;
-
+ 
 int main()
 {
-	int t, m, x, y, maxdist, reachleft, reachright, j, k, count;
+	int t, m, x, y, maxdist, reachleft, reachright, count, temp;
 	int arrhouses[102];
-	int arrpolice[10];
 	cin >> t;
 	while (t--)
 	{
-		count = 0;
-		for (int i = 1; i <= 100; ++i)
-		{
-			arrhouses[i] = i;
-		}
-		cin >> m >> x >> y;
-		for (int i = 0; i < m; ++i)
-		{
-			cin >> arrpolice[i];
-		}
-		maxdist = x * y;
-		for (int i = 0; i < m; ++i)
-		{
-			j = arrpolice[i];
-			k = 0;
-			while (k <= maxdist && arrhouses[j + k] <= 100)
-			{
-				arrhouses[j + k] = 0;
-				++k;
-			}
-			k = 1;
-			while (k <= maxdist && arrhouses[j - k] >= 1)
-			{
-				arrhouses[j - k] = 0;
-				++k;
-			}
-		}
-		for (int p = 1; p <= 100; ++p)
-		{
-			if (arrhouses[p] != 0)
-				++count;
-		}
-		cout << count << endl;
+	    count = 0;
+	    for(int i = 1; i <= 100; ++i)
+	    {
+	        arrhouses[i] = 0;
+        }
+	    cin >> m >> x >> y;
+	    maxdist = x * y;
+	    for(int i = 0; i < m; ++i)
+	    {
+	        cin >> temp;
+	        if(maxdist >= temp + 1)
+	        {
+	            for(int y = 1; y <= maxdist; ++y)
+	            {
+	                arrhouses[y] = 1;
+	            }
+	        }
+	        else
+	        {
+	            reachleft = temp - maxdist;
+	            if(reachleft <= 1)
+	            {
+	                for(int y = temp; y >= 1; --y)
+                    {
+                        arrhouses[y] = 1;
+                    }
+	            }
+	            else
+	            {
+	                for(int y = temp; y >= reachleft; --y)
+                    {
+                        arrhouses[y] = 1;
+                    }
+	            }
+	        }
+	        reachright = temp + maxdist;
+            if(reachright >= 100)
+            {
+                for(int y = temp; y <= 100; ++y)
+                {
+                    arrhouses[y] = 1;
+                }
+            }
+            else
+            {
+                for(int y = temp; y <= reachright; ++y)
+                {
+                    arrhouses[y] = 1;
+                }
+            }
+	    }
+	    
+	    for(int p = 1; p <= 100; ++p)
+	    {
+	        if(arrhouses[p] == 0)
+	            ++count;
+        }
+        cout << count << endl;
 	}
 	return 0;
-}
+} 
